@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pydantic
+motor
+python-dotenv
+mtcnn
+torch
+torchvision
+facenet-pytorch
+numpy
+opencv-python
+scipy
+tensorflow
