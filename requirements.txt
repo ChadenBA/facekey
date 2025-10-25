@@ -1,13 +1,22 @@
+# FastAPI and ASGI server
 fastapi
 uvicorn
-pydantic
+
+# Database
 motor
 python-dotenv
-mtcnn
+pydantic
+
+# Face recognition and image processing
+insightface
+onnxruntime-gpu; platform_system != "Darwin"  # Use GPU if available (for Linux/Windows)
+onnxruntime; platform_system == "Darwin"       # Fallback for macOS
+
+# Image and math libraries
+opencv-python-headless
+numpy
+scipy
+
+# Optional: For torch-based experiments (not required by InsightFace)
 torch
 torchvision
-facenet-pytorch
-numpy
-opencv-python
-scipy
-tensorflow
