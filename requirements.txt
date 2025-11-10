@@ -6,12 +6,12 @@ uvicorn
 motor
 python-dotenv
 pydantic
-
+YOLO
 # Face recognition and image processing
-insightface
-onnxruntime-gpu; platform_system != "Darwin"  # Use GPU if available (for Linux/Windows)
-onnxruntime; platform_system == "Darwin"       # Fallback for macOS
-
+insightface==0.7.3
+onnxruntime-gpu; platform_system != "Darwin"  # Use GPU if available  Linux
+ onnxruntime 
+ opencv-python 
 # Image and math libraries
 opencv-python-headless
 numpy
