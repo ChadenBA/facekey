@@ -5,18 +5,23 @@ import Webcam from "react-webcam";
 const API_URL = "http://127.0.0.1:8000/face";
 
 const FaceWebcam: React.FC = () => {
-  const [name, setName] = useState<string>("");
+  const [name, setName] = useState("");
   const [result, setResult] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
 
   const webcamRef = useRef<Webcam>(null);
 
+  // Capture and store the image from webcam
   const captureWebcam = (): File | null => {
     if (!webcamRef.current) return null;
+
     const imageSrc = webcamRef.current.getScreenshot();
     if (!imageSrc) return null;
 
-    // Convert base64 to File
+    setCapturedImage(imageSrc); // display captured photo
+
+    // Convert base64 string to File
     const byteString = atob(imageSrc.split(",")[1]);
     const ab = new ArrayBuffer(byteString.length);
     const ia = new Uint8Array(ab);
@@ -27,7 +32,7 @@ const FaceWebcam: React.FC = () => {
 
   const handleRegister = async () => {
     const file = captureWebcam();
-    if (!file || !name) {
+    if (!file || !name.trim()) {
       alert("Please enter a name and capture your face.");
       return;
     }
@@ -53,7 +58,7 @@ const FaceWebcam: React.FC = () => {
   const handleVerify = async () => {
     const file = captureWebcam();
     if (!file) {
-      alert("Please capture your face.");
+      alert("Please capture your face before verification.");
       return;
     }
 
@@ -76,14 +81,14 @@ const FaceWebcam: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-black text-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-6 text-cyan-400">FaceKey Authetification </h1>
+      <h1 className="text-3xl font-bold mb-6 text-cyan-400">FaceKey Authentication</h1>
 
       <input
         type="text"
         placeholder="Enter name for registration"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="mb-4 p-3 rounded bg-gray-800 border border-gray-700 w-full text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+        className="mb-4 p-3 rounded bg-gray-800 border border-gray-700 w-full max-w-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400"
       />
 
       <div className="mb-4 flex flex-col items-center">
@@ -101,6 +106,8 @@ const FaceWebcam: React.FC = () => {
         >
           Capture
         </button>
+
+      
       </div>
 
       <div className="flex space-x-4 mb-6">
