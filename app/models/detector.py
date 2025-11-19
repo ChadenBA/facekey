@@ -1,3 +1,4 @@
+
 import cv2
 from insightface.app import FaceAnalysis
 import numpy as np
