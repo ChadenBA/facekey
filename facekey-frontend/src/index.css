@@ -1,140 +1,348 @@
+/* FaceUpload.css */
+
+/* Variables pour la cohérence des couleurs (optionnel, mais recommandé) */
 :root {
-  --font-sans: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  --color-bg: #f5f5f5;       /* light neutral background */
-  --color-primary: #646cff;  /* primary accent color */
-  --color-secondary: #535bf2; /* secondary accent color */
-  --color-card: #ffffff;     /* card background */
-  --color-text: #1a1a1a;     /* main text color */
-  --color-button-bg: #646cff;
-  --color-button-hover: #535bf2;
-  --color-button-text: #ffffff;
-  --color-input-bg: #f0f0ff;
-  --color-input-border: #d0d0ff;
-  --color-input-focus: #646cff;
+  --color-dark-text: #2c3e50;
+  --color-light-text: #7f8c8d;
+  --color-primary-yellow: #f1c40f; /* Couleur de surlignage/accent */
+  --color-accent-blue: #3498db;    /* Contour de la zone de dépôt */
+  --color-accent-pink: #e91e63;    /* Bouton 'new product' */
+  --color-bg-light: #ffffff;
+  --color-bg-white: #f6f6f6;
+  --color-button-cam: #bdc3c7;
+  --color-button-hover: #e5e7eb;
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  font-family: var(--font-sans);
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
+    background-color: var(--color-bg-light);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    line-height: 1.6; /* Améliore la lisibilité */
 }
 
-/* Card style */
-.card {
-  background-color: var(--color-card);
-  padding: 2rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Conteneur principal qui va utiliser Grid pour la mise en page */
+.main-layout-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Une colonne par défaut pour mobile */
+    gap: 40px; /* Espace entre les colonnes */
+    min-height: 100vh;
+    padding: 20px;
+    max-width: 1500px; /* Largeur max pour le contenu */
+    margin: 0 auto; /* Centrer le conteneur */
+    align-items: center; /* Centrer verticalement le contenu */
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+@media (min-width: 768px) { /* Pour les écrans de taille moyenne et plus grande */
+    .main-layout-container {
+        grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
+        padding: 40px;
+    }
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-  color: var(--color-primary);
+/* Section de gauche (Formulaire) */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrer verticalement le contenu du formulaire */
 }
 
-/* Input fields */
-input[type="text"], input[type="email"], input[type="password"] {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1.25rem;
-  border-radius: 12px;
-  border: 1px solid var(--color-input-border);
-  background-color: var(--color-input-bg);
-  color: var(--color-text);
-  font-size: 1rem;
-  transition: all 0.3s ease;
+/* Section de droite (Illustration) */
+.illustration-section {
+    display: none; /* Masqué par défaut sur mobile */
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* S'assurer qu'il prend toute la hauteur disponible */
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-  border-color: var(--color-input-focus);
-  box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.2);
-  outline: none;
+@media (min-width: 768px) {
+    .illustration-section {
+        display: flex; /* Affiché sur les écrans de taille moyenne et plus grande */
+    }
 }
 
-/* Buttons */
-button {
-  border: none;
-  border-radius: 12px;
-  padding: 0.75em 1.5em;
-  font-size: 1rem;
-  font-weight: 600;
-  font-family: var(--font-sans);
-  cursor: pointer;
-  background-color: var(--color-button-bg);
-  color: var(--color-button-text);
-  transition: all 0.3s ease;
-  margin: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.illustration-img {
+    max-width: 100%;
+    height: auto;
 }
 
-button:hover {
-  background-color: var(--color-button-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+
+/* Carte principale (l'interface du formulaire) */
+.face-upload-card {
+    background-color: var(--color-bg-white);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Prend toute la largeur disponible dans sa colonne */
+    text-align: center;
+    box-sizing: border-box; /* S'assurer que le padding est inclus dans la largeur */
 }
 
-button:focus {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 2px;
+/* Titres */
+.header-title {
+    font-size: 2.5rem; /* Augmenter la taille pour le titre principal */
+    font-weight: 800;
+    color: var(--color-dark-text);
+    line-height: 1.1;
+    margin-bottom: 5px;
 }
 
-a {
-  font-weight: 500;
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: color 0.2s ease;
+.header-title-highlight {
+    background-color: var(--color-primary-yellow);
+    padding: 0 8px; /* Augmenter le padding pour le surlignage */
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    border-radius: 5px; /* Ajouter un petit arrondi au surlignage */
 }
 
-a:hover {
-  color: var(--color-secondary);
+.header-subtitle {
+    font-size: 1rem; /* Augmenter la taille du sous-titre */
+    color: var(--color-light-text);
+    text-transform: uppercase;
+    margin-bottom: 30px; /* Plus d'espace sous le sous-titre */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #1e1e2f;
-    --color-card: #2b2b3c;
-    --color-text: #ffffff;
-    --color-button-bg: #646cff;
-    --color-button-hover: #535bf2;
-    --color-button-text: #ffffff;
-    --color-input-bg: #33344d;
-    --color-input-border: #646cff;
-    --color-input-focus: #8ab4f8;
-    --color-primary: #8ab4f8;
-    --color-secondary: #5a8cff;
-  }
+/* Zone de dépôt / Upload */
+.drop-area {
+    padding: 40px 20px; /* Ajuster le padding */
+    border: 3px dashed var(--color-accent-blue);
+    background-color: #f8faff;
+    border-radius: 10px; /* Légèrement plus arrondi */
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    margin-bottom: 20px;
+}
 
-  body {
-    background-color: var(--color-bg);
-    color: var(--color-text);
-  }
+.drop-area:hover {
+    background-color: #eef3ff;
+    border-color: #2980b9;
+}
 
-  .card {
-    background-color: var(--color-card);
-  }
+.drop-area-icon {
+    font-size: 3.5rem; /* Plus grande icône */
+    color: var(--color-accent-blue);
+    display: block;
+    margin-bottom: 10px;
+}
 
-  input[type="text"], input[type="email"], input[type="password"] {
-    background-color: var(--color-input-bg);
-    border-color: var(--color-input-border);
-    color: var(--color-text);
-  }
+.drop-area-text-main {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-dark-text);
+}
+
+.drop-area-text-sub {
+    font-size: 0.85rem;
+    color: var(--color-light-text);
+    margin-top: 5px;
+}
+
+/* Conteneur des boutons d'action (Caméra/How to use) */
+.action-buttons-group {
+    display: flex;
+    justify-content: center; /* Centrer les boutons */
+    flex-wrap: wrap; /* Permettre aux boutons de passer à la ligne */
+    gap: 15px; /* Plus d'espace entre les boutons */
+    margin-bottom: 20px;
+}
+
+/* Styles pour les boutons "Use camera" et "How to use" */
+.btn-secondary {
+    flex: 1 1 auto; /* Permettre aux boutons de s'adapter et de grandir */
+    max-width: 220px; /* Limiter la largeur maximale pour ne pas être trop grands */
+    padding: 12px 20px; /* Plus grand padding */
+    border: 1px solid #ccc;
+    background-color: var(--color-bg-white);
+    color: var(--color-dark-text);
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-button-hover);
+    border-color: #a0a0a0;
+}
+
+.btn-secondary-icon {
+    margin-right: 8px; /* Plus d'espace pour l'icône */
+    font-size: 1.1rem; /* Taille de l'icône */
+}
+
+/* Bouton principal (Check out our new product) */
+.btn-primary-product {
+    width: 100%;
+    padding: 15px 20px; /* Plus grand padding */
+    background-color: var(--color-accent-pink);
+    color: var(--color-bg-white);
+    border: none;
+    border-radius: 10px; /* Arrondi léger */
+    cursor: pointer;
+    font-size: 1.1rem; /* Texte plus grand */
+    font-weight: 700;
+    margin-top: 25px; /* Plus d'espace au-dessus */
+    transition: background-color 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(233, 30, 99, 0.2); /* Ombre colorée */
+}
+
+.btn-primary-product:hover {
+    background-color: #c2185b;
+    transform: translateY(-2px); /* Petit effet de lévitation */
+}
+.btn-primary-product .btn-secondary-icon { /* Style l'icône à l'intérieur de ce bouton */
+    font-size: 1.2rem;
+}
+
+
+/* Champ de nom (pour l'enregistrement) */
+.input-name {
+    width: 100%;
+    padding: 12px 15px; /* Plus grand padding */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: var(--color-dark-text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-name::placeholder {
+    color: var(--color-light-text);
+}
+.input-name:focus {
+    border-color: var(--color-accent-blue);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    outline: none;
+}
+
+/* Boutons Register/Verify */
+.btn-group-actions {
+    display: flex;
+    gap: 15px; /* Plus d'espace */
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permettre aux boutons de passer à la ligne sur petits écrans */
+}
+
+.btn-register, .btn-verify {
+    flex: 1 1 180px; /* Permettre aux boutons de prendre plus de place et de s'enrouler */
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    color: var(--color-bg-white);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+}
+
+.btn-register {
+    background-color: #28a745; /* Vert plus profond */
+}
+.btn-register:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+.btn-verify {
+    background-color: #007bff; /* Bleu plus profond */
+}
+.btn-verify:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.btn-register:disabled, .btn-verify:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Affichage Webcam */
+.webcam-container {
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    background-color: #fcfcfc;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 10px; /* Un peu de padding autour de la webcam */
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+}
+
+.webcam-capture-button {
+    margin-top: 15px; /* Plus d'espace */
+    padding: 10px 20px;
+    background-color: var(--color-primary-yellow);
+    color: var(--color-dark-text);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.webcam-capture-button:hover {
+    background-color: #f39c12;
+}
+
+/* Résultats API */
+.api-result-box {
+    text-align: left;
+    padding: 15px;
+    background-color: #f0f4f7; /* Couleur de fond plus douce */
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    color: #333;
+    margin-top: 25px; /* Plus d'espace au-dessus */
+}
+.api-result-box pre {
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap; /* Conserver les retours à la ligne */
+    word-break: break-all; /* Casser les mots longs */
+}
+
+/* Zone d'instruction "How to use" */
+.how-to-use-text {
+    text-align: left;
+    padding: 18px; /* Plus de padding */
+    background-color: #e8f5e9; /* Fond vert clair pour les instructions */
+    border: 1px solid #c8e6c9;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    color: #2e7d32; /* Texte vert foncé */
+    line-height: 1.5;
+}
+.how-to-use-text strong {
+    font-weight: 700;
+    color: #1b5e20;
+}
+.how-to-use-text ol {
+    padding-left: 25px;
+    margin-top: 10px;
+}
+.how-to-use-text li {
+    margin-bottom: 5px;
+}
+
+/* Indicateur de fichier sélectionné */
+.file-selected-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2ecc71; /* Vert */
+    padding: 10px;
+    background-color: #e6ffe6;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 10px;
 }
