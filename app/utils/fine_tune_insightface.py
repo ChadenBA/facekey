@@ -4,9 +4,19 @@ import torch
 from torch import nn
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
+from prometheus_client import Gauge, start_http_server
+
+import psutil
+
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
+
+
+EPOCH_GAUGE = Gauge("model_epoch", "Current epoch of the model")
+LOSS_GAUGE = Gauge("model_loss", "Current loss of the model")
+CPU_USAGE_GAUGE = Gauge("process_cpu_percent", "CPU usage percentage")
+RAM_USAGE_GAUGE = Gauge("process_ram_bytes", "RAM usage in bytes")
 # --- Dataset from CSV ---
 class EmbeddingDataset(Dataset):
     def __init__(self, csv_file, id_map=None):
@@ -80,6 +90,7 @@ model = ArcFaceFineTuner(input_dim=input_dim, embedding_dim=512, num_classes=num
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
+
 # --- Training loop ---
 for epoch in range(10):
     model.train()
@@ -87,7 +98,7 @@ for epoch in range(10):
     for X_batch, y_batch in train_loader:
         X_batch, y_batch = X_batch.to(device), y_batch.to(device)
 
-        # Dimension check to avoid mat1/mat2 errors
+        # Dimension check
         if X_batch.shape[1] != model.fc.in_features:
             raise ValueError(f"Embedding dimension mismatch: {X_batch.shape[1]} vs {model.fc.in_features}")
 
@@ -98,8 +109,16 @@ for epoch in range(10):
         optimizer.step()
         total_loss += loss.item()
 
-    print(f"Epoch {epoch+1}, Loss: {total_loss / len(train_loader):.4f}")
+        # Update CPU/RAM per batch if you want more granularity
+        CPU_USAGE_GAUGE.set(psutil.cpu_percent())
+        RAM_USAGE_GAUGE.set(psutil.virtual_memory().used)
 
+    # Update epoch and average loss
+    avg_loss = total_loss / len(train_loader)
+    EPOCH_GAUGE.set(epoch)
+    LOSS_GAUGE.set(avg_loss)
+
+    print(f"Epoch {epoch+1}, Loss: {avg_loss:.4f}, CPU: {psutil.cpu_percent()}%, RAM: {psutil.virtual_memory().used / 1e9:.2f} GB")
 # --- Save fine-tuned model ---
 torch.save(model.state_dict(), "insightface_finetuned.pt")
 print("Fine-tuned model saved as 'insightface_finetuned.pt'")

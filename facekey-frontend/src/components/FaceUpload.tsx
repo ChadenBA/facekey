@@ -89,7 +89,7 @@ const FaceUpload: React.FC = () => {
         <div className="face-upload-card">
 
           <h1 className="header-title">
-            <span className="header-title-highlight">Face Recognition System</span><br />
+            <span className="header-title-highlight">FaceKey</span><br />
             <span className="header-title-highlight">Register & Verify Identities</span>
           </h1>
 

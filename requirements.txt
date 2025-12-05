@@ -20,3 +20,4 @@ scipy
 # Optional: For torch-based experiments (not required by InsightFace)
 torch
 torchvision
+prometheus-client

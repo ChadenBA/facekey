@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+
+  # Prometheus itself
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Your FastAPI application
+  - job_name: "fastapi_face_app"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: ["172.17.0.1:8001"]
