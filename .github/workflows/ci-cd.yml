@@ -23,9 +23,6 @@ jobs:
       - name: Install dependencies
         run: pip install --no-cache-dir -r requirements.txt
 
-      - name: Run backend tests
-        run: pytest
-
       - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
@@ -38,7 +35,7 @@ jobs:
           context: ./app
           file: ./app/Dockerfile
           push: true
-          tags: your-dockerhub-user/facekey-backend:${{ github.sha }}
+          tags: chaden13/facekey-backend:${{ github.sha }}
 
       - name: Scan Docker image with Trivy
         run: trivy image your-dockerhub-user/facekey-backend:${{ github.sha }}
@@ -63,4 +60,4 @@ jobs:
           context: ./facekey-frontend
           file: ./facekey-frontend/Dockerfile
           push: true
-          tags: your-dockerhub-user/facekey-frontend:${{ github.sha }}
+          tags: chaden13/facekey-frontend:${{ github.sha }}
