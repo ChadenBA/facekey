@@ -15,7 +15,9 @@ from prometheus_client import Counter, start_http_server , Gauge
 import requests
 import base64
 from datetime import datetime
-
+from app.models.load_emotion_model import load_emotion_model
+from PIL import Image
+emotion_model = load_emotion_model("best_model_weights.pth", device="cpu")
 
 
 
@@ -51,7 +53,7 @@ embedder = ArcFaceEmbedder()
 anti_spoof = AntiSpoofing()
 
 THRESHOLD = 0.8
-SPOOF_THRESHOLD = 3 # change as needed
+SPOOF_THRESHOLD = 2.9 # change as needed
 # Start Prometheus metrics server
 start_http_server(8001)  # Prometheus will scrape metrics here
 
@@ -223,6 +225,7 @@ async def verify_face(file: UploadFile = File(...)):
         face = faces[0]
         face_crop = cv2.resize(crop_face(image, face), (128, 128))
 
+        # 1. anti spoof check
         spoof_score = anti_spoof.predict(face_crop)
         print("DEBUG spoof score:", spoof_score)
 
@@ -230,15 +233,15 @@ async def verify_face(file: UploadFile = File(...)):
             log_spoof(face_crop, spoof_score)
             SPOOF_COUNTER.inc()
             await db.spoofs.insert_one({
-            "timestamp": datetime.utcnow(),
-             "spoof_score": float(spoof_score),
-             "image_preview": encode_image_for_db(face_crop),  # small thumbnail/base64
-              "user_attempt": None
-          })
+                "timestamp": datetime.utcnow(),
+                "spoof_score": float(spoof_score),
+                "image_preview": encode_image_for_db(face_crop),
+                "user_attempt": None
+            })
             print("⚠️ SPOOFING DETECTED — score:", spoof_score)
             return {"message": "⚠️ Spoof detected! Real face required."}
 
-        # Preprocess and get embedding
+        # 2. embedding
         processed = preprocess_face(face, image)
         faces_proc = detector.detect(processed)
         if not faces_proc:
@@ -262,13 +265,34 @@ async def verify_face(file: UploadFile = File(...)):
                     best_user = user["name"]
 
         verified = best_score >= THRESHOLD
+
+        # ----------------------------------------------------------------------
+         # 3. Emotion recognition (si vérifié)
+        emotion_result = None
         
+        if verified:
+            # Convertir OpenCV (BGR) -> PIL (RGB)
+            pil_img = Image.fromarray(cv2.cvtColor(face_crop, cv2.COLOR_BGR2RGB))
+            
+            # ✅ Utiliser la nouvelle signature
+            pred_idx, pred_label, probs_dict = emotion_model.predict(pil_img, device="cpu")
+            
+            emotion_result = {
+                "emotion": pred_label,
+                "confidence": probs_dict[pred_label],
+              #  "all_probabilities": probs_dict
+            }
+
         return {
             "verified": verified,
             "user": best_user if verified else None,
-            "similarity": round(best_score, 4)
+            "similarity": round(best_score, 4),
+            "emotion": emotion_result  # Dict complet ou None
         }
 
     except Exception as e:
         traceback.print_exc()
+        return {"error": str(e)}
         return {"error": f"Verification failed: {str(e)}"}
+
+
