@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: facekey-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: facekey-backend
+  template:
+    metadata:
+      labels:
+        app: facekey-backend
+    spec:
+      containers:
+      - name: facekey-backend
+        image: your-dockerhub-user/facekey-backend:latest
+        ports:
+        - containerPort: 8000

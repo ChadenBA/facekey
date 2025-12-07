@@ -1,0 +1,53 @@
+name: CI/CD Facekey
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  backend-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Setup Python
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run backend tests
+        run: pytest
+
+      - name: Build Docker image
+        run: docker build -t facekey-backend:${{ github.sha }} ./app
+
+      - name: Scan Docker image with Trivy
+        run: trivy image facekey-backend:${{ github.sha }}
+
+      - name: Scan Docker image with Snyk
+        run: snyk container test facekey-backend:${{ github.sha }}
+
+      - name: Push image to DockerHub
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: your-dockerhub-user/facekey-backend:${{ github.sha }}
+
+  frontend-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build frontend Docker image
+        run: docker build -t facekey-frontend:${{ github.sha }} ./facekey-frontend
+
+      - name: Push frontend image to DockerHub
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: your-dockerhub-user/facekey-frontend:${{ github.sha }}

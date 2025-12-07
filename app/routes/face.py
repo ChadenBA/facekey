@@ -53,7 +53,7 @@ embedder = ArcFaceEmbedder()
 anti_spoof = AntiSpoofing()
 
 THRESHOLD = 0.8
-SPOOF_THRESHOLD = 2.9 # change as needed
+SPOOF_THRESHOLD = 3 # change as needed
 # Start Prometheus metrics server
 start_http_server(8001)  # Prometheus will scrape metrics here
 

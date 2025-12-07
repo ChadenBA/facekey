@@ -1,348 +1,775 @@
-/* FaceUpload.css */
-
-/* Variables pour la cohérence des couleurs (optionnel, mais recommandé) */
-:root {
-  --color-dark-text: #2c3e50;
-  --color-light-text: #7f8c8d;
-  --color-primary-yellow: #f1c40f; /* Couleur de surlignage/accent */
-  --color-accent-blue: #3498db;    /* Contour de la zone de dépôt */
-  --color-accent-pink: #e91e63;    /* Bouton 'new product' */
-  --color-bg-light: #ffffff;
-  --color-bg-white: #f6f6f6;
-  --color-button-cam: #bdc3c7;
-  --color-button-hover: #e5e7eb;
+/* ============================================
+   GLOBAL STYLES
+=============================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: var(--color-bg-light);
-    font-family: Arial, sans-serif;
-    margin: 0;
-    line-height: 1.6; /* Améliore la lisibilité */
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 100vh;
 }
 
-/* Conteneur principal qui va utiliser Grid pour la mise en page */
-.main-layout-container {
-    display: grid;
-    grid-template-columns: 1fr; /* Une colonne par défaut pour mobile */
-    gap: 40px; /* Espace entre les colonnes */
-    min-height: 100vh;
-    padding: 20px;
-    max-width: 1500px; /* Largeur max pour le contenu */
-    margin: 0 auto; /* Centrer le conteneur */
-    align-items: center; /* Centrer verticalement le contenu */
+/* ============================================
+   CONTAINER
+=============================================== */
+.facekey-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%);
 }
 
-@media (min-width: 768px) { /* Pour les écrans de taille moyenne et plus grande */
-    .main-layout-container {
-        grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
-        padding: 40px;
-    }
+/* ============================================
+   CARD
+=============================================== */
+.facekey-card {
+  background: rgba(88, 28, 135, 0.3);
+  backdrop-filter: blur(20px);
+  border-radius: 32px;
+  padding: 48px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: fadeIn 1s ease-out;
 }
 
-/* Section de gauche (Formulaire) */
-.form-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Centrer verticalement le contenu du formulaire */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Section de droite (Illustration) */
-.illustration-section {
-    display: none; /* Masqué par défaut sur mobile */
-    justify-content: center;
-    align-items: center;
-    height: 100%; /* S'assurer qu'il prend toute la hauteur disponible */
+/* ============================================
+   HEADER
+=============================================== */
+.facekey-header {
+  text-align: center;
+  margin-bottom: 40px;
 }
 
-@media (min-width: 768px) {
-    .illustration-section {
-        display: flex; /* Affiché sur les écrans de taille moyenne et plus grande */
-    }
+.facekey-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+  text-shadow: 0 4px 20px rgba(168, 85, 247, 0.5);
 }
 
-.illustration-img {
-    max-width: 100%;
-    height: auto;
+.facekey-title-accent {
+  color: #c084fc;
 }
 
-
-/* Carte principale (l'interface du formulaire) */
-.face-upload-card {
-    background-color: var(--color-bg-white);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Prend toute la largeur disponible dans sa colonne */
-    text-align: center;
-    box-sizing: border-box; /* S'assurer que le padding est inclus dans la largeur */
+.facekey-subtitle {
+  font-size: 0.9rem;
+  color: #d8b4fe;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
-/* Titres */
-.header-title {
-    font-size: 2.5rem; /* Augmenter la taille pour le titre principal */
-    font-weight: 800;
-    color: var(--color-dark-text);
-    line-height: 1.1;
-    margin-bottom: 5px;
+/* ============================================
+   CAMERA SECTION
+=============================================== */
+.camera-section {
+  margin-bottom: 24px;
+  border-radius: 24px;
+  overflow: hidden;
 }
 
-.header-title-highlight {
-    background-color: var(--color-primary-yellow);
-    padding: 0 8px; /* Augmenter le padding pour le surlignage */
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
-    border-radius: 5px; /* Ajouter un petit arrondi au surlignage */
+.camera-placeholder {
+  background: linear-gradient(135deg, #9333ea 0%, #db2777 100%);
+  padding: 60px 40px;
+  text-align: center;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(147, 51, 234, 0.4);
+  transition: all 0.4s ease;
 }
 
-.header-subtitle {
-    font-size: 1rem; /* Augmenter la taille du sous-titre */
-    color: var(--color-light-text);
-    text-transform: uppercase;
-    margin-bottom: 30px; /* Plus d'espace sous le sous-titre */
+.camera-placeholder:hover {
+  box-shadow: 0 15px 60px rgba(147, 51, 234, 0.6);
+  transform: translateY(-2px);
 }
 
-/* Zone de dépôt / Upload */
-.drop-area {
-    padding: 40px 20px; /* Ajuster le padding */
-    border: 3px dashed var(--color-accent-blue);
-    background-color: #f8faff;
-    border-radius: 10px; /* Légèrement plus arrondi */
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
-    margin-bottom: 20px;
+.camera-icon {
+  color: #ffffff;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
 }
 
-.drop-area:hover {
-    background-color: #eef3ff;
-    border-color: #2980b9;
+.open-camera-btn {
+  background: #ffffff;
+  color: #9333ea;
+  border: none;
+  padding: 16px 48px;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.drop-area-icon {
-    font-size: 3.5rem; /* Plus grande icône */
-    color: var(--color-accent-blue);
-    display: block;
-    margin-bottom: 10px;
+.open-camera-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
 }
 
-.drop-area-text-main {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--color-dark-text);
+.open-camera-btn:active {
+  transform: scale(0.98);
 }
 
-.drop-area-text-sub {
-    font-size: 0.85rem;
-    color: var(--color-light-text);
-    margin-top: 5px;
+.photo-captured {
+  margin-top: 20px;
+  color: #ffffff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
 }
 
-/* Conteneur des boutons d'action (Caméra/How to use) */
-.action-buttons-group {
-    display: flex;
-    justify-content: center; /* Centrer les boutons */
-    flex-wrap: wrap; /* Permettre aux boutons de passer à la ligne */
-    gap: 15px; /* Plus d'espace entre les boutons */
-    margin-bottom: 20px;
+.check-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 1rem;
 }
 
-/* Styles pour les boutons "Use camera" et "How to use" */
-.btn-secondary {
-    flex: 1 1 auto; /* Permettre aux boutons de s'adapter et de grandir */
-    max-width: 220px; /* Limiter la largeur maximale pour ne pas être trop grands */
-    padding: 12px 20px; /* Plus grand padding */
-    border: 1px solid #ccc;
-    background-color: var(--color-bg-white);
-    color: var(--color-dark-text);
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s, border-color 0.2s;
+/* ============================================
+   WEBCAM ACTIVE
+=============================================== */
+.webcam-active {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
-.btn-secondary:hover {
-    background-color: var(--color-button-hover);
-    border-color: #a0a0a0;
+.webcam-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 24px;
 }
 
-.btn-secondary-icon {
-    margin-right: 8px; /* Plus d'espace pour l'icône */
-    font-size: 1.1rem; /* Taille de l'icône */
+.webcam-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
 }
 
-/* Bouton principal (Check out our new product) */
-.btn-primary-product {
-    width: 100%;
-    padding: 15px 20px; /* Plus grand padding */
-    background-color: var(--color-accent-pink);
-    color: var(--color-bg-white);
-    border: none;
-    border-radius: 10px; /* Arrondi léger */
-    cursor: pointer;
-    font-size: 1.1rem; /* Texte plus grand */
-    font-weight: 700;
-    margin-top: 25px; /* Plus d'espace au-dessus */
-    transition: background-color 0.2s, transform 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 5px 15px rgba(233, 30, 99, 0.2); /* Ombre colorée */
+.capture-btn {
+  background: #9333ea;
+  color: #ffffff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(147, 51, 234, 0.5);
 }
 
-.btn-primary-product:hover {
-    background-color: #c2185b;
-    transform: translateY(-2px); /* Petit effet de lévitation */
-}
-.btn-primary-product .btn-secondary-icon { /* Style l'icône à l'intérieur de ce bouton */
-    font-size: 1.2rem;
+.capture-btn:hover {
+  background: #7c3aed;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(147, 51, 234, 0.6);
 }
 
+.close-btn {
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.5);
+}
 
-/* Champ de nom (pour l'enregistrement) */
-.input-name {
-    width: 100%;
-    padding: 12px 15px; /* Plus grand padding */
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
+.close-btn:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(220, 38, 38, 0.6);
+}
+
+/* ============================================
+   INSTRUCTIONS
+=============================================== */
+.instructions-toggle {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.instructions-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.instructions-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+  color: #ffffff;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.instructions-box h3 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: #d8b4fe;
+}
+
+.instructions-box ol {
+  padding-left: 20px;
+  line-height: 1.8;
+  color: #e9d5ff;
+}
+
+.instructions-box li {
+  margin-bottom: 8px;
+}
+
+/* ============================================
+   NAME INPUT
+=============================================== */
+.name-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 1rem;
+  color: #ffffff;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.name-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.name-input:focus {
+  outline: none;
+  border-color: #9333ea;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.2);
+  transform: translateY(-2px);
+}
+
+.name-input:hover {
+  border-color: rgba(147, 51, 234, 0.6);
+}
+
+/* ============================================
+   ACTION BUTTONS
+=============================================== */
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.register-btn,
+.verify-btn {
+  padding: 16px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.register-btn {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.register-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #047857 0%, #059669 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(16, 185, 129, 0.5);
+}
+
+.verify-btn {
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.verify-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(59, 130, 246, 0.5);
+}
+
+.register-btn:active:not(:disabled),
+.verify-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.register-btn:disabled,
+.verify-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(30%);
+}
+
+/* ============================================
+   RESULT BOX
+=============================================== */
+.result-box {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 24px;
+  color: #ffffff;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #d8b4fe;
+}
+
+.result-message {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #e9d5ff;
+}
+
+.result-details p {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.verified-yes {
+  color: #10b981;
+  font-weight: 700;
+}
+
+.verified-no {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+/* ============================================
+   EMOTION BOX
+=============================================== */
+.emotion-box {
+  margin-top: 24px;
+  padding: 24px;
+  background: rgba(147, 51, 234, 0.15);
+  border: 2px solid rgba(147, 51, 234, 0.4);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  animation: emotionBoxEnter 0.6s ease-out, emotionPulse 2s ease-in-out infinite 0.6s;
+}
+
+@keyframes emotionBoxEnter {
+  0% {
+    transform: scale(0.8) translateY(50px);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05) translateY(-10px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes emotionPulse {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(147, 51, 234, 0.5), 0 0 60px rgba(236, 72, 153, 0.3);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(147, 51, 234, 0.9), 0 0 100px rgba(236, 72, 153, 0.6);
+    transform: scale(1.02);
+  }
+}
+
+.emotion-box::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+.emotion-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #d8b4fe;
+  text-align: center;
+  animation: titleBounce 1s ease;
+}
+
+@keyframes titleBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.emotion-emoji-main {
+  font-size: 6rem;
+  text-align: center;
+  margin-bottom: 20px;
+  animation: emojiExplosion 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.9));
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes emojiExplosion {
+  0%, 100% {
+    transform: rotate(-15deg) scale(1);
+    filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.9)) hue-rotate(0deg);
+  }
+  25% {
+    transform: rotate(15deg) scale(1.3);
+    filter: drop-shadow(0 0 50px rgba(255, 255, 255, 1)) hue-rotate(90deg);
+  }
+  50% {
+    transform: rotate(-15deg) scale(1.5);
+    filter: drop-shadow(0 0 60px rgba(255, 255, 255, 1)) hue-rotate(180deg);
+  }
+  75% {
+    transform: rotate(15deg) scale(1.3);
+    filter: drop-shadow(0 0 50px rgba(255, 255, 255, 1)) hue-rotate(270deg);
+  }
+}
+
+.emotion-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 16px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: slideInFromBottom 0.6s ease;
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.confidence-bar-container {
+  margin: 20px 0;
+  animation: slideInFromBottom 0.8s ease;
+}
+
+.confidence-bar-bg {
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.confidence-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #3b82f6, #9333ea);
+  border-radius: 12px;
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(147, 51, 234, 0.8);
+  animation: confidenceGlow 2s ease-in-out infinite;
+}
+
+@keyframes confidenceGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(147, 51, 234, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(147, 51, 234, 1);
+  }
+}
+
+.emotion-confidence {
+  text-align: center;
+  font-size: 1rem;
+  color: #d8b4fe;
+  font-weight: 600;
+}
+
+.emotion-message {
+  text-align: center;
+  font-size: 1.15rem;
+  color: #fbbf24;
+  font-style: italic;
+  line-height: 1.8;
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(251, 191, 36, 0.1);
+  border-radius: 12px;
+  animation: messageFloat 3s ease-in-out infinite;
+}
+
+@keyframes messageFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* ============================================
+   EMOJI EXPLOSION - FULL PAGE ANIMATION
+=============================================== */
+.emoji-explosion {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.floating-emoji {
+  position: absolute;
+  bottom: -100px;
+  animation: floatUpExplosion 8s ease-out forwards;
+  opacity: 0;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+@keyframes floatUpExplosion {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+    transform: translateX(0) translateY(0) rotate(0deg) scale(0.5);
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(calc((50vw - 50%) * (var(--random, 1)))) translateY(-50vh) rotate(180deg) scale(1.2);
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    bottom: 120vh;
+    opacity: 0;
+    transform: translateX(calc((100vw - 100%) * (var(--random, 1)))) translateY(-100vh) rotate(720deg) scale(0.3);
+  }
+}
+
+/* ============================================
+   CONFETTI EFFECT
+=============================================== */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9998;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  opacity: 0;
+  animation: confettiFall 4s linear forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    top: -10px;
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+  100% {
+    top: 100vh;
+    opacity: 0.5;
+    transform: translateX(calc(100px - 200px * var(--random, 0.5))) rotate(720deg);
+  }
+}
+
+/* ============================================
+   FULL SCREEN OVERLAY EFFECTS
+=============================================== */
+@keyframes screenFlash {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.facekey-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle at center, transparent 0%, rgba(147, 51, 234, 0.1) 100%);
+  animation: pulseBackground 4s ease-in-out infinite;
+}
+
+@keyframes pulseBackground {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* ============================================
+   RESPONSIVE
+=============================================== */
+@media (max-width: 768px) {
+  .facekey-card {
+    padding: 32px 24px;
+  }
+
+  .facekey-title {
+    font-size: 2.5rem;
+  }
+
+  .camera-placeholder {
+    padding: 40px 24px;
+  }
+
+  .action-buttons {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .facekey-title {
+    font-size: 2rem;
+  }
+
+  .facekey-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .open-camera-btn {
+    padding: 14px 36px;
     font-size: 1rem;
-    color: var(--color-dark-text);
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-.input-name::placeholder {
-    color: var(--color-light-text);
-}
-.input-name:focus {
-    border-color: var(--color-accent-blue);
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-    outline: none;
-}
-
-/* Boutons Register/Verify */
-.btn-group-actions {
-    display: flex;
-    gap: 15px; /* Plus d'espace */
-    margin-bottom: 20px;
-    flex-wrap: wrap; /* Permettre aux boutons de passer à la ligne sur petits écrans */
-}
-
-.btn-register, .btn-verify {
-    flex: 1 1 180px; /* Permettre aux boutons de prendre plus de place et de s'enrouler */
-    padding: 14px 20px;
-    border: none;
-    border-radius: 8px;
-    color: var(--color-bg-white);
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    font-size: 1rem;
-}
-
-.btn-register {
-    background-color: #28a745; /* Vert plus profond */
-}
-.btn-register:hover {
-    background-color: #218838;
-    transform: translateY(-1px);
-}
-
-.btn-verify {
-    background-color: #007bff; /* Bleu plus profond */
-}
-.btn-verify:hover {
-    background-color: #0056b3;
-    transform: translateY(-1px);
-}
-
-.btn-register:disabled, .btn-verify:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* Affichage Webcam */
-.webcam-container {
-    margin-bottom: 20px;
-    border: 1px solid #eee;
-    background-color: #fcfcfc;
-    border-radius: 8px;
-    overflow: hidden;
-    padding: 10px; /* Un peu de padding autour de la webcam */
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
-}
-
-.webcam-capture-button {
-    margin-top: 15px; /* Plus d'espace */
-    padding: 10px 20px;
-    background-color: var(--color-primary-yellow);
-    color: var(--color-dark-text);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s;
-}
-
-.webcam-capture-button:hover {
-    background-color: #f39c12;
-}
-
-/* Résultats API */
-.api-result-box {
-    text-align: left;
-    padding: 15px;
-    background-color: #f0f4f7; /* Couleur de fond plus douce */
-    border: 1px solid #dcdcdc;
-    border-radius: 8px;
-    overflow-x: auto;
-    font-size: 0.85rem;
-    color: #333;
-    margin-top: 25px; /* Plus d'espace au-dessus */
-}
-.api-result-box pre {
-    margin: 0;
-    padding: 0;
-    white-space: pre-wrap; /* Conserver les retours à la ligne */
-    word-break: break-all; /* Casser les mots longs */
-}
-
-/* Zone d'instruction "How to use" */
-.how-to-use-text {
-    text-align: left;
-    padding: 18px; /* Plus de padding */
-    background-color: #e8f5e9; /* Fond vert clair pour les instructions */
-    border: 1px solid #c8e6c9;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 0.95rem;
-    color: #2e7d32; /* Texte vert foncé */
-    line-height: 1.5;
-}
-.how-to-use-text strong {
-    font-weight: 700;
-    color: #1b5e20;
-}
-.how-to-use-text ol {
-    padding-left: 25px;
-    margin-top: 10px;
-}
-.how-to-use-text li {
-    margin-bottom: 5px;
-}
-
-/* Indicateur de fichier sélectionné */
-.file-selected-text {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #2ecc71; /* Vert */
-    padding: 10px;
-    background-color: #e6ffe6;
-    border-radius: 5px;
-    display: inline-block;
-    margin-bottom: 10px;
+  }
 }
