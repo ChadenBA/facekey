@@ -36,12 +36,19 @@ jobs:
           file: ./app/Dockerfile
           push: true
           tags: chaden13/facekey-backend:${{ github.sha }}
+      - name: Install Trivy
+        run: |
+         sudo apt-get update
+         sudo apt-get install -y wget
+         wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_$(uname -s)_$(uname -m).tar.gz
+         tar zxvf trivy_$(uname -s)_$(uname -m).tar.gz
+         sudo mv trivy /usr/local/bin/
 
       - name: Scan Docker image with Trivy
-        run: trivy image your-dockerhub-user/facekey-backend:${{ github.sha }}
+        run: trivy image chaden13/facekey-backend:${{ github.sha }}
 
       - name: Scan Docker image with Snyk
-        run: snyk container test your-dockerhub-user/facekey-backend:${{ github.sha }}
+        run: snyk container test chaden13/facekey-backend:${{ github.sha }}
 
   frontend-ci:
     runs-on: ubuntu-latest
