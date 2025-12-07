@@ -13,13 +13,13 @@ onnxruntime-gpu; platform_system != "Darwin"  # Use GPU if available  Linux
  onnxruntime 
  opencv-python 
 # Image and math libraries
-opencv-python-headless
+#opencv-python-headless
 numpy
 scipy
 
 # Optional: For torch-based experiments (not required by InsightFace)
-torch
-torchvision
+#torch
+#torchvision
 prometheus-client
 
 
