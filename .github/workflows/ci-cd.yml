@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      
 
 jobs:
   backend-ci:
@@ -17,42 +16,51 @@ jobs:
         with:
           python-version: "3.10"
 
+      # Free up disk space (optional but recommended for ML packages)
+      - name: Free up space
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/*
+
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install --no-cache-dir -r requirements.txt
 
       - name: Run backend tests
         run: pytest
 
-      - name: Build Docker image
-        run: docker build -t facekey-backend:${{ github.sha }} ./app
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Scan Docker image with Trivy
-        run: trivy image facekey-backend:${{ github.sha }}
-
-      - name: Scan Docker image with Snyk
-        run: snyk container test facekey-backend:${{ github.sha }}
-
-      - name: Push image to DockerHub
+      - name: Build and push backend Docker image
         uses: docker/build-push-action@v4
         with:
+          context: ./app
+          file: ./app/Dockerfile
           push: true
           tags: your-dockerhub-user/facekey-backend:${{ github.sha }}
 
+      - name: Scan Docker image with Trivy
+        run: trivy image your-dockerhub-user/facekey-backend:${{ github.sha }}
+
+      - name: Scan Docker image with Snyk
+        run: snyk container test your-dockerhub-user/facekey-backend:${{ github.sha }}
+
   frontend-ci:
-   runs-on: ubuntu-latest
-   steps:
-    - uses: actions/checkout@v3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-    - name: Log in to DockerHub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and push frontend Docker image
-      uses: docker/build-push-action@v4
-      with:
-        context: ./facekey-frontend
-        file: ./facekey-frontend/Dockerfile
-        push: true
-        tags: your-dockerhub-user/facekey-frontend:${{ github.sha }}
+      - name: Build and push frontend Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./facekey-frontend
+          file: ./facekey-frontend/Dockerfile
+          push: true
+          tags: your-dockerhub-user/facekey-frontend:${{ github.sha }}
