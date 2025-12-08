@@ -48,8 +48,7 @@ jobs:
       - name: Scan Docker image with Trivy
         run: trivy image chaden13/facekey-backend:${{ github.sha }}
 
-      - name: Scan Docker image with Snyk
-        run: snyk container test chaden13/facekey-backend:${{ github.sha }}
+      
 
   frontend-ci:
     runs-on: ubuntu-latest
@@ -69,3 +68,5 @@ jobs:
           file: ./facekey-frontend/Dockerfile
           push: true
           tags: chaden13/facekey-frontend:${{ github.sha }}
+      - name: Scan Docker image with Trivy
+        run: trivy image chaden13/facekey-frontend:${{ github.sha }}
